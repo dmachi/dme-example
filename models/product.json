@@ -1,0 +1,86 @@
+{
+	"$schema": "http://dmachi.github.io/dme/schema/dme-hyper-schema.json#",
+	"id": "product#",
+	
+	"description": "product schema",
+
+	"type": "object",
+	"require": ["id"],
+	"pathStart": "/product",
+	"links": [{
+		"rel": "self",
+		"title": "Get a product instance",
+		"method": "GET",
+		"href": "{/params:*}",
+		"path": "/[a-zA-Z0-9_]+",
+		"schema": {
+			"type": "object",
+			"properties": {
+				"params": {
+					"type": "string"
+				}
+			},
+			"required": ["params"]
+		},
+		"targetSchema": {"$ref":"#"}
+	},{
+		"rel": "search",
+		"title": "Query Products",
+		"method": "GET",
+		"encType": "application/x-www-form-urlencoded",
+		"parseQuery": false,
+		"href": "/",
+		"path": "$",
+		"schema": {
+			"$ref": "http://dmachi.github.io/dme/schema/dme-hyper-schema.json#/definitions/RQLString"			
+		},
+		"targetSchema": {
+			"type": "string",
+			"items": {
+				"$ref": "#"
+			}
+		}
+	},{
+		"rel": "update",
+		"title": "Update a product",
+		"method": "POST",
+		"href": "{id}/{bar}",
+		"schema": {
+			"type": "object",
+			"description": "",
+			"properties": {
+				"id": {"type": "string"}
+			},
+
+			"required": ["id"]
+		},
+		"targetSchema":{"$ref":"#"}
+	}, {
+		"rel": "create",
+		"title": "Add a new product at a specified id",
+		"method": "PUT",
+		"href": "{id}/{bleh}",
+		"schema": {
+			"$ref": "#"
+		}
+	}],
+
+	"properties": {
+		"id": {
+			"indexed": true,
+			"type": "string"
+		},
+		"name": {
+			"indexed": true,
+			"type": "string"
+		},
+		"quantityAvailable": {
+			"type": "integer",
+			"default": 0
+		},
+		"description": {
+			"indexed": true,
+			"type": "string"
+		}
+	}
+}
